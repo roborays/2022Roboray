@@ -24,8 +24,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * steering and an Xbox controller.
  */
 public class Robot extends TimedRobot {
-  private final CANSparkMax m_leftMotor = new CANSparkMax(0, MotorType.kBrushed);
-  private final CANSparkMax m_rightMotor = new CANSparkMax(1, MotorType.kBrushed);
+  private final CANSparkMax m_leftMotor = new CANSparkMax(1, MotorType.kBrushed);
+  private final CANSparkMax m_rightMotor = new CANSparkMax(4, MotorType.kBrushed);
   private final CANSparkMax m_leftMotor2 = new CANSparkMax(2, MotorType.kBrushed);
   private final CANSparkMax m_rightMotor2 = new CANSparkMax(3, MotorType.kBrushed);
   private final MotorControllerGroup m_left = new MotorControllerGroup(m_leftMotor, m_leftMotor2);
@@ -35,25 +35,24 @@ public class Robot extends TimedRobot {
   private final XboxController m_driverController = new XboxController(0);
   private final XboxController m_operatorController = new XboxController(1);
 
-  private final WPI_TalonFX m_shooter = new WPI_TalonFX(8);
-  private final WPI_TalonFX m_elevator = new WPI_TalonFX(9);
+  private final WPI_TalonFX m_shooter = new WPI_TalonFX(9);
+  private final WPI_TalonFX m_elevator = new WPI_TalonFX(8);
 
-  private final CANSparkMax m_intake = new CANSparkMax(10, MotorType.kBrushed);
+  private final CANSparkMax m_intake = new CANSparkMax(5, MotorType.kBrushed);
 
   private final DoubleSolenoid m_reach = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
   private final DoubleSolenoid m_extend = new DoubleSolenoid(PneumaticsModuleType.REVPH, 3, 4);
 
   // Speed Constants
   private final double intakeSpeed = 0.5;
-  private final double elevatorSpeed = 0.5;
-  private final double shooterSpeed = 0.5;
+  private final double elevatorSpeed = -0.25;
+  private final double shooterSpeed = -0.25;
 
   // Auto Time Contants
   private Timer timer;
-  private double step1Time = 2;
-  private double step2Time = step1Time + 3;
-  private double step3Time = step2Time + 3;
-  private double step4Time = step3Time + 4;
+  private double step1Time = 0; //how long the robot waits
+  private double step2Time = step1Time + 3; //how long the robot shoots
+  private double step3Time = step2Time + 3; //how long the robot backs up
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
@@ -65,7 +64,10 @@ public class Robot extends TimedRobot {
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
-    m_rightMotor.setInverted(true);
+    m_rightMotor.setInverted(false);
+    m_leftMotor.setInverted(true);
+    m_rightMotor2.setInverted(false);
+    m_leftMotor2.setInverted(true);
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
@@ -102,10 +104,10 @@ public class Robot extends TimedRobot {
           // Stop the elevator and the shooter.  Drive backwards
           m_elevator.set(0);
           m_shooter.set(0);
-          m_robotDrive.arcadeDrive(-0.25, 0);
-        } else if (timer.get() <= step4Time) {
+          m_robotDrive.tankDrive(.5, .5);
+        } else {
           // Stop the drivetrain
-          m_robotDrive.arcadeDrive(0, 0);
+          m_robotDrive.tankDrive(0, 0);
         }
         break;
     }
@@ -118,7 +120,7 @@ public class Robot extends TimedRobot {
     // That means that the Y axis of the left stick moves the left side
     // of the robot forward and backward, and the Y axis of the right stick
     // moves the right side of the robot forward and backward.
-    m_robotDrive.tankDrive(-m_driverController.getLeftY(), -m_driverController.getRightY());
+    m_robotDrive.tankDrive(-m_driverController.getLeftY(),-m_driverController.getRightY(), true);
 
     // This uses 2 buttons to extend and retract a cylinder
     if (m_driverController.getLeftBumperPressed()) {
@@ -158,7 +160,7 @@ public class Robot extends TimedRobot {
       m_intake.set(intakeSpeed);
     }
     if (m_operatorController.getRightBumperPressed()) {
-      m_shooter.set(0);
+      m_intake.set(0);
     }
   }
 }
