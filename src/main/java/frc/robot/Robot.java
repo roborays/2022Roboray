@@ -4,8 +4,8 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
   private final WPI_TalonFX m_shooter = new WPI_TalonFX(9);
   private final WPI_TalonFX m_elevator = new WPI_TalonFX(8);
 
-  private final TalonSRX m_intake = new TalonSRX(5);
+  private final WPI_TalonSRX m_intake = new WPI_TalonSRX(5);
 
   private final DoubleSolenoid m_reach = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
   private final DoubleSolenoid m_extend = new DoubleSolenoid(PneumaticsModuleType.REVPH, 3, 4);
