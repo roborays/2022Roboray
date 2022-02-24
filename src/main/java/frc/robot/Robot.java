@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -38,7 +39,7 @@ public class Robot extends TimedRobot {
   private final WPI_TalonFX m_shooter = new WPI_TalonFX(9);
   private final WPI_TalonFX m_elevator = new WPI_TalonFX(8);
 
-  private final CANSparkMax m_intake = new CANSparkMax(5, MotorType.kBrushed);
+  private final TalonSRX m_intake = new TalonSRX(5);
 
   private final DoubleSolenoid m_reach = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
   private final DoubleSolenoid m_extend = new DoubleSolenoid(PneumaticsModuleType.REVPH, 3, 4);
@@ -46,7 +47,7 @@ public class Robot extends TimedRobot {
   // Speed Constants
   private final double intakeSpeed = 0.5;
   private final double elevatorSpeed = -0.25;
-  private final double shooterSpeed = -0.25;
+  private final double shooterSpeed = -0.35;
 
   // Auto Time Contants
   private Timer timer;
@@ -140,7 +141,13 @@ public class Robot extends TimedRobot {
     
     /* OPERATOR CONTROLS */
     // This is an example of a button that needs to be held
-    if (m_operatorController.getXButton()) {
+    if  (m_operatorController.getRightTriggerAxis() > 0.5){
+      m_shooter.set(shooterSpeed);
+    } else {
+      m_shooter.set(0);
+    }
+    
+    if (m_operatorController.getRightBumperPressed()) {
       m_elevator.set(elevatorSpeed); 
     }
     else {
@@ -148,19 +155,22 @@ public class Robot extends TimedRobot {
     }
 
     // A & B buttons turn the shooter on and off
-    if (m_operatorController.getAButtonPressed()) {
+    /*if (m_operatorController.getAButtonPressed()) {
       m_shooter.set(shooterSpeed);
     }
     if (m_operatorController.getBButtonPressed()) {
       m_shooter.set(0);
     }
-
+*/
     //  Left and Right Bumpers turn the intake on and off
     if (m_operatorController.getLeftBumperPressed()) {
       m_intake.set(intakeSpeed);
-    }
-    if (m_operatorController.getRightBumperPressed()) {
+    } else {
       m_intake.set(0);
     }
+    /*if (m_operatorController.getRightBumperPressed()) {
+      m_intake.set(0);
+      */
+    
   }
 }
