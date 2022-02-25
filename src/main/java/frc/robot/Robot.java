@@ -41,12 +41,12 @@ public class Robot extends TimedRobot {
 
   private final WPI_TalonSRX m_intake = new WPI_TalonSRX(5);
 
-  private final DoubleSolenoid m_reach = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
-  private final DoubleSolenoid m_extend = new DoubleSolenoid(PneumaticsModuleType.REVPH, 3, 4);
+  private final DoubleSolenoid m_hang = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 4);
+  private final DoubleSolenoid m_extend = new DoubleSolenoid(PneumaticsModuleType.REVPH, 2, 3);
 
   // Speed Constants
-  private final double intakeSpeed = 0.5;
-  private final double elevatorSpeed = -0.25;
+  private final double intakeSpeed = .5;
+  private final double elevatorSpeed = -0.35;
   private final double shooterSpeed = -0.35;
 
   // Auto Time Contants
@@ -69,6 +69,8 @@ public class Robot extends TimedRobot {
     m_leftMotor.setInverted(true);
     m_rightMotor2.setInverted(false);
     m_leftMotor2.setInverted(true);
+
+    m_extend.set(Value.kReverse);
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
@@ -125,10 +127,10 @@ public class Robot extends TimedRobot {
 
     // This uses 2 buttons to extend and retract a cylinder
     if (m_driverController.getLeftBumperPressed()) {
-      m_reach.set(Value.kForward);
+      m_hang.set(Value.kForward);
     }
     if (m_driverController.getRightBumperPressed()) {
-      m_reach.set(Value.kReverse);
+      m_hang.set(Value.kReverse);
     }
 
     // Here we are using the triggers like buttons.  I don't particularly recommend this.
@@ -147,7 +149,7 @@ public class Robot extends TimedRobot {
       m_shooter.set(0);
     }
     
-    if (m_operatorController.getRightBumperPressed()) {
+    if (m_operatorController.getRightBumper()) {
       m_elevator.set(elevatorSpeed); 
     }
     else {
@@ -163,7 +165,7 @@ public class Robot extends TimedRobot {
     }
 */
     //  Left and Right Bumpers turn the intake on and off
-    if (m_operatorController.getLeftBumperPressed()) {
+    if (m_operatorController.getLeftBumper()) {
       m_intake.set(intakeSpeed);
     } else {
       m_intake.set(0);
