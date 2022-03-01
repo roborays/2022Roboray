@@ -169,7 +169,16 @@ public class Robot extends TimedRobot {
      //slow down speed of drive moto
     if (m_operatorController.getLeftTriggerAxis() > 0.5){
       m_robotDrive.tankDrive(-m_driverController.getLeftY()*0.5,-m_driverController.getRightY()*0.5, true);
+    
       }
+
+    if (m_operatorController.getAButton()){
+      m_elevator.set(-.20);
+    }
+
+    if (m_operatorController.getBButton()){
+      m_shooter.set(.35);
+    }
 
   }
 }
