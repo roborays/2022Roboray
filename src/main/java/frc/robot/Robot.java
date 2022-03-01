@@ -52,9 +52,10 @@ public class Robot extends TimedRobot {
   // Auto Time Contants
   private Timer timer;
   private double step1Time = 0; //how long the robot waits
-  private double step2Time = step1Time + 3; //how long the robot shoots
-  private double step3Time = step2Time + 3; //how long the robot backs up
-
+  private double step2Time = step1Time + .2; //robot move forward and backward
+  private double step3Time = step2Time + .2; //robot move forward and backward
+  private double step4Time = step3Time + 3; //how long the robot shoots
+  private double step5Time = step4Time + 3; //how long the robot backs up 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
@@ -101,9 +102,17 @@ public class Robot extends TimedRobot {
           // Do nothing so we don't get in someone else's way.
         } else if (timer.get() <= step2Time) {
           // Run the elevator and the shooter
+          m_left.set(1);
+          m_right.set(1);
+        } else if (timer.get() <= step3Time) {
+          // Run the elevator and the shooter
+          m_left.set(-1);
+          m_right.set(-1);
+        }else if (timer.get() <= step4Time) {
+          // Run the elevator and the shooter
           m_elevator.set(elevatorSpeed);
           m_shooter.set(shooterSpeed);
-        } else if (timer.get() <= step3Time) {
+        } else if (timer.get() <= step5Time) {
           // Stop the elevator and the shooter.  Drive backwards
           m_elevator.set(0);
           m_shooter.set(0);
@@ -167,11 +176,13 @@ public class Robot extends TimedRobot {
     }
 
      //slow down speed of drive moto
-    if (m_operatorController.getLeftTriggerAxis() > 0.5){
-      m_robotDrive.tankDrive(-m_driverController.getLeftY()*0.5,-m_driverController.getRightY()*0.5, true);
+
+      if (m_operatorController.getLeftTriggerAxis() > 0.5){
+        m_robotDrive.tankDrive(-m_driverController.getLeftY()*0.5,-m_driverController.getRightY()*0.5, true);
     
       }
-
+  
+ /*
     if (m_operatorController.getAButton()){
       m_elevator.set(-.20);
     }
@@ -183,7 +194,7 @@ public class Robot extends TimedRobot {
     if (m_operatorController.getXButton()){
       m_intake.set(-.7);
     }
-
+*/
     if (m_operatorController.getYButton()){
       m_intake.set(-.7);
       m_shooter.set(.35);
