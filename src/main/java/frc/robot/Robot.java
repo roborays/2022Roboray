@@ -45,8 +45,8 @@ public class Robot extends TimedRobot {
   private final DoubleSolenoid m_extend = new DoubleSolenoid(PneumaticsModuleType.REVPH, 2, 3);
 
   // Speed Constants
-  private final double intakeSpeed = .5;
-  private final double elevatorSpeed = -0.35;
+  private final double intakeSpeed = .7;
+  private final double elevatorSpeed = 0.20;
   private final double shooterSpeed = -0.35;
 
   // Auto Time Contants
@@ -125,7 +125,11 @@ public class Robot extends TimedRobot {
     // moves the right side of the robot forward and backward.
     m_robotDrive.tankDrive(-m_driverController.getLeftY(),-m_driverController.getRightY(), true);
 
-    // This uses 2 buttons to extend and retract a cylinder
+    if (m_driverController.getAButton()){
+      m_robotDrive.tankDrive(-.4, -.4);
+     }
+
+    // This uses 2 buttons to ext}end and retract a cylinder
     if (m_driverController.getLeftBumperPressed()) {
       m_hang.set(Value.kForward);
     }
@@ -156,23 +160,16 @@ public class Robot extends TimedRobot {
       m_elevator.set(0);
     }
 
-    // A & B buttons turn the shooter on and off
-    /*if (m_operatorController.getAButtonPressed()) {
-      m_shooter.set(shooterSpeed);
-    }
-    if (m_operatorController.getBButtonPressed()) {
-      m_shooter.set(0);
-    }
-*/
-    //  Left and Right Bumpers turn the intake on and off
     if (m_operatorController.getLeftBumper()) {
       m_intake.set(intakeSpeed);
     } else {
       m_intake.set(0);
     }
-    /*if (m_operatorController.getRightBumperPressed()) {
-      m_intake.set(0);
-      */
-    
+
+     //slow down speed of drive moto
+    if (m_operatorController.getLeftTriggerAxis() > 0.5){
+      m_robotDrive.tankDrive(-m_driverController.getLeftY()*0.5,-m_driverController.getRightY()*0.5, true);
+      }
+
   }
 }
