@@ -180,5 +180,15 @@ public class Robot extends TimedRobot {
       m_shooter.set(.35);
     }
 
+    if (m_operatorController.getXButton()){
+      m_intake.set(-.7);
+    }
+
+    if (m_operatorController.getYButton()){
+      m_intake.set(-.7);
+      m_shooter.set(.35);
+      m_elevator.set(-.20);
+    }
+  
   }
 }
