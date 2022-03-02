@@ -132,7 +132,10 @@ public class Robot extends TimedRobot {
     // That means that the Y axis of the left stick moves the left side
     // of the robot forward and backward, and the Y axis of the right stick
     // moves the right side of the robot forward and backward.
-    m_robotDrive.tankDrive(-m_driverController.getLeftY(),-m_driverController.getRightY(), true);
+
+    // Top line is tank bottom is arcade.  Uncomment whichever the driver likes
+    //m_robotDrive.tankDrive(-m_driverController.getLeftY(),-m_driverController.getRightY(), true);
+    m_robotDrive.arcadeDrive(-m_driverController.getLeftY(),m_driverController.getRightX(), true);
 
     if (m_driverController.getAButton()){
       m_robotDrive.tankDrive(-.4, -.4);
