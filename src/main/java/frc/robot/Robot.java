@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
   // Speed Constants
   private final double intakeSpeed = .7;
   private final double elevatorSpeed = 0.20;
-  private final double shooterSpeed = -0.35;
+  private final double shooterSpeed = -0.25;
 
   // Auto Time Contants
   private Timer timer;
@@ -102,12 +102,12 @@ public class Robot extends TimedRobot {
           // Do nothing so we don't get in someone else's way.
         } else if (timer.get() <= step2Time) {
           // Run the elevator and the shooter
-          m_left.set(1);
-          m_right.set(1);
+          m_left.set(.4);
+          m_right.set(.4);
         } else if (timer.get() <= step3Time) {
           // Run the elevator and the shooter
-          m_left.set(-1);
-          m_right.set(-1);
+          m_left.set(-.4);
+          m_right.set(-.4);
         }else if (timer.get() <= step4Time) {
           // Run the elevator and the shooter
           m_elevator.set(elevatorSpeed);
@@ -190,13 +190,12 @@ public class Robot extends TimedRobot {
     if (m_operatorController.getBButton()){
       m_shooter.set(.35);
     }
-
-    if (m_operatorController.getXButton()){
+*/
+    if (m_operatorController.getAButton()){
       m_intake.set(-.7);
     }
-*/
+
     if (m_operatorController.getYButton()){
-      m_intake.set(-.7);
       m_shooter.set(.35);
       m_elevator.set(-.20);
     }
