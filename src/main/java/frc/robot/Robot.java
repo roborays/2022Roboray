@@ -46,8 +46,8 @@ public class Robot extends TimedRobot {
 
   // Speed Constants
   private final double intakeSpeed = .7;
-  private final double elevatorSpeed = 0.20;
-  private final double shooterSpeed = -0.25;
+  private final double elevatorSpeed = 0.40;
+  private final double shooterSpeed = -0.30;
 
   // Auto Time Contants
   private Timer timer;
